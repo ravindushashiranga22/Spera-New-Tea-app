@@ -1,0 +1,67 @@
+.main-container {
+    display: flex;
+    justify-content: space-between;
+  }
+  
+  .sidebar {
+    width: 15%;
+    padding: 20px;
+  }
+  
+  .items-container {
+    width: 60%;
+  }
+  
+  .order-summary {
+    width: 20%;
+    background-color: #f8f9fa;
+    padding: 20px;
+    border-radius: 10px;
+  }
+  
+  .order-item {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+  }
+  
+  .price {
+    color: green;
+    font-weight: bold;
+  }
+
+  /* ItemsData.css */
+
+.flex-container {
+  display: flex;
+  flex-direction: column; /* Stack items vertically */
+  align-items: center; /* Center items horizontally */
+}
+
+.glass-effect {
+  background: rgba(255, 255, 255, 0.5); /* Transparent white background */
+  backdrop-filter: blur(10px); /* Apply blur effect */
+  border-radius: 10px; /* Rounded corners */
+  padding: 20px; /* Inner spacing */
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+  width: 100%; /* Full width */
+  max-width: 500px; /* Maximum width */
+}
+
+.status-message {
+  color: green; /* Status message color */
+  text-align: center; /* Center the status message */
+}
+
+  
+
+.background-wrapper{
+  background-color: #A66E38;
+}
+
+/* ItemsData.css */
+.status-message {
+  color: #3a2e28; /* Change the text color to red */
+  font-weight: bold; /* Optional: make the text bold */
+  margin-top: 10px; /* Optional: add some space above the message */
+}
