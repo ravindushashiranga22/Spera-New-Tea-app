@@ -216,13 +216,16 @@ const Login = () => {
               <Link
                 variant="body2"
                 onClick={handleSignUpClick}
-                style={{
-                  color: "black",
-                  textDecoration: "none",
-                  cursor: "pointer",
+                sx={{
+                  color: 'text.secondary',
+                  textDecoration: 'none',
+                  cursor: 'pointer',
+                  '&:hover': {
+                    textDecoration: 'underline',
+                  },
                 }}
               >
-                Don't have an account? Sign up
+                Don’t have an account? Sign up
               </Link>
             </Grid>
           </Grid>

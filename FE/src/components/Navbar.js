@@ -1,57 +1,54 @@
-import React from "react";
-import { useNavigate, useLocation } from "react-router-dom";
-import Container from "react-bootstrap/Container";
-import Nav from "react-bootstrap/Nav";
-import Navbar from "react-bootstrap/Navbar";
+import React from 'react';
+import { useNavigate, useLocation } from 'react-router-dom';
+import Container from 'react-bootstrap/Container';
+import Nav from 'react-bootstrap/Nav';
+import Navbar from 'react-bootstrap/Navbar';
 
 // Import your logo (adjust the path based on where the logo is stored)
-import logo from "../pages/login/new logo.png";
-import ordericon from "./shopping-cart_4824141.png";
-import logouticon from "./logout_12080248.png";
+import logo from '../pages/login/logo.webp';
+import { IoMdCart } from 'react-icons/io';
+import { MdLogout } from 'react-icons/md';
 
 export default function CustomNavbar() {
   const navigate = useNavigate();
   const location = useLocation();
 
   const handleLogout = () => {
-    window.localStorage.removeItem("token");
-    window.localStorage.removeItem("user");
-    window.localStorage.removeItem("role");
-    navigate("/login");
+    window.localStorage.removeItem('token');
+    window.localStorage.removeItem('user');
+    window.localStorage.removeItem('role');
+    navigate('/login');
   };
 
   return (
-    <Navbar expand="lg" className="p-0 bg-white rounded">
+    <Navbar expand="lg" className="py-2 px-5 bg-white">
       <Container>
         <Navbar.Brand href="#">
           <img
             src={logo}
             alt="Tea App Logo"
-            height="90rem"
+            height="50"
             className="d-inline-block align-center"
           />
-          {/* Tea App */}
         </Navbar.Brand>
         <Navbar.Toggle aria-controls="navbar-nav" />
         <Navbar.Collapse id="navbar-nav">
-          <Nav className="ms-auto">
-            {" "}
-            {/* Align Orders and Log Out to the right */}
-            {location.pathname !== "/orders" && (
-              <Nav.Link href="/orders"> <img
-              src={ordericon}
-              alt="Order_Icon"
-              height="30rem"
-              className="d-inline-block align-center"
-            />Orders</Nav.Link>
+          <Nav className="ms-auto py-4 p-lg-0 gap-lg-5 gap-2">
+            {' '}
+            {/* Increases gap on mobile */}
+            {location.pathname !== '/orders' && (
+              <Nav.Link href="/orders" className="d-flex align-items-center">
+                <IoMdCart className="text-black me-2 " />
+                <span className="font-weight-bold">Orders</span>
+              </Nav.Link>
             )}
-            <Nav.Link href="#" onClick={handleLogout}>
-            <img
-              src={logouticon}
-              alt="logout_Icon"
-              height="30rem"
-              className="d-inline-block align-center"
-            /> Log out
+            <Nav.Link
+              href="#"
+              onClick={handleLogout}
+              className="d-flex align-items-center"
+            >
+              <MdLogout className="text-black me-2" />{' '}
+              <span className="font-weight-bold">Log Out</span>
             </Nav.Link>
           </Nav>
         </Navbar.Collapse>

@@ -264,7 +264,7 @@ const Signup = () => {
             >
               Sign Up
             </Button>
-            <Grid container justifyContent="center">
+            {/* <Grid container justifyContent="center">
               <Grid item>
                 <Link
                   variant="body2"
@@ -278,7 +278,26 @@ const Signup = () => {
                   Already have an account? Sign in
                 </Link>
               </Grid>
+            </Grid> */}
+
+            <Grid container justifyContent="center">
+            <Grid item>
+              <Link
+                variant="body2"
+                onClick={handleSignInClick}
+                sx={{
+                  color: 'text.secondary',
+                  textDecoration: 'none',
+                  cursor: 'pointer',
+                  '&:hover': {
+                    textDecoration: 'underline',
+                  },
+                }}
+              >
+                Don’t have an account? Sign In
+              </Link>
             </Grid>
+          </Grid>
           </Box>
         </Container>
       </Box>
