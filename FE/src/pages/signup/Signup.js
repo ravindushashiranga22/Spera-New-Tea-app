@@ -23,7 +23,7 @@ import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
 import { useNavigate } from "react-router-dom";
 import backgroundImage from "./wall.jpg"; // Adjust the path to your image
-import newLogo from "./new logo.png"; // Import your new logo here
+import newLogo from "../login/logo.webp"; // Import your new logo here
 
 const theme = createTheme({
   palette: {
@@ -122,23 +122,26 @@ const Signup = () => {
   return (
     <ThemeProvider theme={theme}>
       <Box
+        className="gap-5 d-flex"
         sx={{
-          height: "100vh",
-          alignItems: "center",
-          display: "flex",
-          flexDirection: "column",
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          minHeight: '100vh',
+          flexDirection: 'column',
+          paddingX: { xs: 1, sm: 2, md: 3 }, // Adjusts padding based on screen size
         }}
       >
-        <img src={newLogo} alt="New Logo" style={{ width: "30%" }} />
+        <img src={newLogo} alt="New Logo" className="col-6 col-sm-5 col-md-5 col-lg-4 col-xl-2" />
         <Container
           component="main"
+          className="glass-effect mx-5"
+          style={{ maxWidth: '500px' }}
           sx={{
-            backdropFilter: "blur(10px)",
-            borderRadius: 7,
-            width: "30%",
-            padding: 4,
+            backdropFilter: 'blur(10px)',
+            borderRadius: 4,
+            padding: { xs: 2, sm: 3, md: 4 }, // Adjusts padding for different screen sizes
           }}
-          className="glass-effect"
         >
           <Typography
             component="h1"
@@ -257,11 +260,11 @@ const Signup = () => {
               fullWidth
               variant="contained"
               sx={{ mt: 3, mb: 2 }}
-              className="bg-color-6"
+              className="bg-color-6 pt-2 pb-2"
             >
               Sign Up
             </Button>
-            <Grid container justifyContent="flex-end">
+            <Grid container justifyContent="center">
               <Grid item>
                 <Link
                   variant="body2"
