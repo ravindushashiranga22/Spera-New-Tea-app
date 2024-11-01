@@ -5,25 +5,25 @@ import blackCoffee from './coffee.png';
 
 const items = [
   {
-    name: "කිරි තේ",
+    name: 'කිරි තේ',
     qtyMax: 10,
     quantity: 10,
     image: tea, // Use the imported image
   },
   {
-    name: "ප්ලේන් ටී",
+    name: 'ප්ලේන් ටී',
     qtyMax: 10,
     quantity: 10,
     image: plainTea, // Use the imported image
   },
   {
-    name: "කිරි කෝපී",
+    name: 'කිරි කෝපී',
     qtyMax: 10,
     quantity: 10,
     image: milkCoffee, // Use the imported image
   },
   {
-    name: "කෝපී",
+    name: 'කෝපී',
     qtyMax: 10,
     quantity: 10,
     image: blackCoffee, // Use the imported image

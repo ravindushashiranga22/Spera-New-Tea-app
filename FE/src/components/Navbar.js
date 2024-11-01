@@ -4,7 +4,6 @@ import Container from 'react-bootstrap/Container';
 import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
 
-// Import your logo (adjust the path based on where the logo is stored)
 import logo from '../pages/login/logo.webp';
 import { IoMdCart } from 'react-icons/io';
 import { MdLogout } from 'react-icons/md';
@@ -21,7 +20,7 @@ export default function CustomNavbar() {
   };
 
   return (
-    <Navbar expand="lg" className="py-2 px-5 bg-white">
+    <Navbar expand="lg" className="py-2 px-5 bg-white fixed-top shadow-sm">
       <Container>
         <Navbar.Brand href="#">
           <img
@@ -34,8 +33,6 @@ export default function CustomNavbar() {
         <Navbar.Toggle aria-controls="navbar-nav" />
         <Navbar.Collapse id="navbar-nav">
           <Nav className="ms-auto py-4 p-lg-0 gap-lg-5 gap-2">
-            {' '}
-            {/* Increases gap on mobile */}
             {location.pathname !== '/orders' && (
               <Nav.Link href="/orders" className="d-flex align-items-center">
                 <IoMdCart className="text-black me-2 " />

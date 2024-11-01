@@ -1,5 +1,5 @@
 import React from 'react';
-import { Navigate } from "react-router-dom";
+import { Navigate } from 'react-router-dom';
 import Navbar from './Navbar';
 
 const ProtectRoute = ({ children, allowShop }) => {
@@ -12,7 +12,7 @@ const ProtectRoute = ({ children, allowShop }) => {
   }
 
   // If role is 'Shop' and access is not allowed, redirect to orders
-  if (role === "Shop" && !allowShop) {
+  if (role === 'Shop' && !allowShop) {
     return <Navigate to="/orders" replace />;
   }
 
@@ -20,9 +20,9 @@ const ProtectRoute = ({ children, allowShop }) => {
   return (
     <>
       <Navbar /> {/* Render Navbar before children */}
-      {children}
+      <div>{children}</div>
     </>
   );
-}
+};
 
 export default ProtectRoute;
