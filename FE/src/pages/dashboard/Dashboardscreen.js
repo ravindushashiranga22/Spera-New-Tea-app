@@ -71,6 +71,9 @@ export default function Dashboard() {
       }}
     >
       <div className="container">
+        <h1 className="text-center mb-5" style={{ color: '#343a40' }}>
+          Order your tea 🍵 to stay awake 😴!
+        </h1>
         <div className="row justify-content-center">
           {items.map((item, index) => (
             <div className="col-12 col-md-6 col-lg-4 col-xl-3 mb-4" key={index}>

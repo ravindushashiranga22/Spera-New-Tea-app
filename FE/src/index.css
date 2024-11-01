@@ -69,4 +69,50 @@ code {
   font-size: 1.5rem !important;
 }
 
-/* Add this CSS to your main stylesheet */
+.item-data-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 2rem; /* Spacing between items */
+  transition: background-color 0.3s ease; /* Transition for background color */
+  border-radius: 15px; /* Rounded corners */
+}
+
+.glass-effect {
+  background: rgba(255, 255, 255, 0.1); /* Semi-transparent white */
+  border-radius: 15px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+  backdrop-filter: blur(10px); /* Glass effect */
+  padding: 20px;
+  transition: transform 0.75s;
+}
+
+.glass-effect:hover {
+  transform: scale(1.05); /* Slight scale effect on hover */
+}
+
+.item-image {
+  height: 150px;
+  width: 150px;
+  max-width: 100%;
+  border-radius: 10px; /* Rounded corners for the image */
+}
+
+.quantity-selection {
+  text-align: left; /* Align text to the left */
+}
+
+.status-message {
+  color: #ff0000; /* Red color for error messages */
+  margin-top: 1rem;
+}
+
+.order-button {
+  width: 100%; /* Full width button */
+  border-radius: 8px; /* Rounded corners for the button */
+  transition: background-color 0.2s;
+}
+
+.order-button:hover {
+  background-color: #28a745; /* Darker green on hover */
+}

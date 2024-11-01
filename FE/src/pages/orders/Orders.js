@@ -1,20 +1,29 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { styled } from '@mui/material/styles';
-import Table from '@mui/material/Table';
-import TableBody from '@mui/material/TableBody';
+// import Table from '@mui/material/Table';
+// import TableBody from '@mui/material/TableBody';
 import TableCell, { tableCellClasses } from '@mui/material/TableCell';
-import TableContainer from '@mui/material/TableContainer';
-import TableHead from '@mui/material/TableHead';
-import TableRow from '@mui/material/TableRow';
-import Paper from '@mui/material/Paper';
-import Modal from 'react-bootstrap/Modal';
-import Button from 'react-bootstrap/Button';
+// import TableContainer from '@mui/material/TableContainer';
+// import TableHead from '@mui/material/TableHead';
+// import TableRow from '@mui/material/TableRow';
+// import Paper from '@mui/material/Paper';
+// import Modal from 'react-bootstrap/Modal';
+// import Button from 'react-bootstrap/Button';
 import './Orders.css';
 import image1 from './coffee-cup.png';
 import image2 from './coffee.png';
 import image3 from './coffee222.png';
 import image4 from './plain tea.png';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import {
+  TableContainer,
+  Paper,
+  Table,
+  TableHead,
+  TableRow,
+  TableBody,
+} from '@mui/material';
+import { Button, Modal } from 'react-bootstrap';
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -194,7 +203,6 @@ const Orders = () => {
       {cancelSuccessMessage && (
         <div className="alert alert-success">{cancelSuccessMessage}</div>
       )}
-
       {/* Display item cards for Shop users */}
       {userRole === 'Shop' && (
         <div className="item-cards-container mb-3">
@@ -207,8 +215,7 @@ const Orders = () => {
           ))}
         </div>
       )}
-
-      <TableContainer component={Paper}>
+      {/* <TableContainer component={Paper}>
         <Table sx={{ minWidth: 700 }} aria-label="customized table">
           <TableHead>
             <TableRow>
@@ -236,7 +243,6 @@ const Orders = () => {
                     {`${order?.userId?.firstName} ${order?.userId?.lastName} (${order?.userId?.role})`}
                   </StyledTableCell>
                   <StyledTableCell align="right">
-                    {/* Cancel button logic */}
                     {!order.isCompleted && !order.isAccepted && (
                       <button
                         className="cancel-btn bg-color-6"
@@ -249,7 +255,6 @@ const Orders = () => {
                       </button>
                     )}
 
-                    {/* Accept button logic */}
                     {userRole === 'Shop' && !order.isAccepted && (
                       <button
                         className="accept-btn bg-color-6"
@@ -259,7 +264,6 @@ const Orders = () => {
                       </button>
                     )}
 
-                    {/* Done button logic */}
                     {userRole === 'Shop' &&
                       order.isAccepted &&
                       !order.isCompleted && (
@@ -277,7 +281,7 @@ const Orders = () => {
                         Reason: {order.cancelReason}
                       </span>
                     )}
-                    {/* Display accepted status for normal users */}
+
                     {order.isAccepted &&
                       !order.isCompleted &&
                       userRole !== 'Shop' && (
@@ -286,7 +290,6 @@ const Orders = () => {
                         </span>
                       )}
 
-                    {/* Display completed status */}
                     {order.isCompleted && (
                       <span style={{ color: '#5B3D21', fontWeight: 'bold' }}>
                         Order Completed
@@ -305,7 +308,6 @@ const Orders = () => {
           </TableBody>
         </Table>
       </TableContainer>
-
       <Modal show={showModal} onHide={() => setShowModal(false)}>
         <Modal.Header closeButton>
           <Modal.Title>Select an Option</Modal.Title>
@@ -357,7 +359,7 @@ const Orders = () => {
                 කෝපි ඉවරයි
               </label>
             </div>
-            {/* New radio buttons */}
+
             <div>
               <label>
                 <input
@@ -398,6 +400,196 @@ const Orders = () => {
             }}
           >
             Confirm Cancellation
+          </Button>
+        </Modal.Footer>
+      </Modal> */}
+
+      <TableContainer
+        component={Paper}
+        className="p-4 mb-4 rounded shadow-lg border-0"
+      >
+        <div className="table-responsive">
+          <Table className="table align-middle table-hover">
+            <TableHead>
+              <TableRow className="text-dark ">
+                <StyledTableCell className="fs-6 fw-semibold text-uppercase">
+                  Order Name
+                </StyledTableCell>
+                <StyledTableCell
+                  align="right"
+                  className="fs-6 fw-semibold text-uppercase"
+                >
+                  Quantity
+                </StyledTableCell>
+                <StyledTableCell
+                  align="right"
+                  className="fs-6 fw-semibold text-uppercase"
+                >
+                  Ordered On
+                </StyledTableCell>
+                <StyledTableCell
+                  align="right"
+                  className="fs-6 fw-semibold text-uppercase"
+                >
+                  Order By
+                </StyledTableCell>
+                <StyledTableCell
+                  align="right"
+                  className="fs-6 fw-semibold text-uppercase"
+                >
+                  Actions
+                </StyledTableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {orders.length > 0 ? (
+                orders.map((order) => (
+                  <StyledTableRow
+                    key={order._id}
+                    className={`${
+                      order.isCompleted ? 'bg-success-light' : 'bg-white'
+                    } shadow-sm rounded transition-all`}
+                  >
+                    <StyledTableCell component="th" scope="row">
+                      <span className="fw-bold">
+                        {order.name || 'Unknown Order'}
+                      </span>
+                    </StyledTableCell>
+                    <StyledTableCell align="right">
+                      <span className="badge bg-primary text-white p-2 rounded-pill">
+                        {order.quantity}
+                      </span>
+                    </StyledTableCell>
+                    <StyledTableCell align="right" className="text-muted">
+                      {new Date(order.createdAt).toLocaleString()}
+                    </StyledTableCell>
+                    <StyledTableCell align="right">
+                      <span className="text-info fw-semibold">{`${order?.userId?.firstName} ${order?.userId?.lastName}`}</span>
+                      <small className="d-block text-secondary">
+                        ({order?.userId?.role})
+                      </small>
+                    </StyledTableCell>
+                    <StyledTableCell align="right">
+                      {!order.isCompleted && !order.isAccepted && (
+                        <Button
+                          variant="danger"
+                          size="sm"
+                          className="me-2 shadow-sm rounded-pill"
+                          onClick={() => {
+                            setOrderIdToCancel(order._id);
+                            setShowModal(true);
+                          }}
+                        >
+                          Cancel
+                        </Button>
+                      )}
+                      {userRole === 'Shop' && !order.isAccepted && (
+                        <Button
+                          variant="success"
+                          size="sm"
+                          className="me-2 shadow-sm rounded-pill"
+                          onClick={() => handleOrderAction(order._id, 'accept')}
+                        >
+                          Accept
+                        </Button>
+                      )}
+                      {userRole === 'Shop' &&
+                        order.isAccepted &&
+                        !order.isCompleted && (
+                          <Button
+                            variant="primary"
+                            size="sm"
+                            className="shadow-sm rounded-pill"
+                            onClick={() => handleOrderAction(order._id, 'done')}
+                          >
+                            Done
+                          </Button>
+                        )}
+                      {order.isCanceled && (
+                        <span className="text-danger d-block mt-2 fw-bold">
+                          Order Canceled
+                          <small className="text-muted d-block">
+                            Reason: {order.cancelReason}
+                          </small>
+                        </span>
+                      )}
+                      {order.isAccepted &&
+                        !order.isCompleted &&
+                        userRole !== 'Shop' && (
+                          <span className="text-success fw-bold">
+                            Order Accepted
+                          </span>
+                        )}
+                      {order.isCompleted && (
+                        <span className="text-muted fw-bold">
+                          Order Completed
+                        </span>
+                      )}
+                    </StyledTableCell>
+                  </StyledTableRow>
+                ))
+              ) : (
+                <StyledTableRow>
+                  <StyledTableCell
+                    colSpan={5}
+                    align="center"
+                    className="text-muted"
+                  >
+                    No orders available.
+                  </StyledTableCell>
+                </StyledTableRow>
+              )}
+            </TableBody>
+          </Table>
+        </div>
+      </TableContainer>
+
+      <Modal show={showModal} onHide={() => setShowModal(false)} centered>
+        <Modal.Header closeButton className="border-0">
+          <Modal.Title className="fs-5">Cancel Order</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <h6 className="text-muted">Reason for cancellation:</h6>
+          <div className="mt-3">
+            {[
+              'සීනි ඉවරයි',
+              'පිටි ඉවරයි',
+              'තේ කොල ඉවරයි',
+              'කෝපි ඉවරයි',
+              'වතුර නෑ',
+              'විදුලිය නෑ',
+            ].map((reason) => (
+              <div key={reason} className="form-check">
+                <input
+                  type="radio"
+                  className="form-check-input"
+                  value={reason}
+                  checked={selectedOption === reason}
+                  onChange={() => setSelectedOption(reason)}
+                />
+                <label className="form-check-label text-secondary">
+                  {reason}
+                </label>
+              </div>
+            ))}
+          </div>
+        </Modal.Body>
+        <Modal.Footer className="border-0">
+          <Button variant="secondary" onClick={() => setShowModal(false)}>
+            Close
+          </Button>
+          <Button
+            variant="danger"
+            onClick={() => {
+              if (selectedOption) {
+                handleOrderAction(orderIdToCancel, 'cancel', selectedOption);
+                setShowModal(false);
+              } else {
+                alert('Please select a cancellation reason.');
+              }
+            }}
+          >
+            Confirm
           </Button>
         </Modal.Footer>
       </Modal>

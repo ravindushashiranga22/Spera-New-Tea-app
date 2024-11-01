@@ -33,7 +33,6 @@ const ItemsData = ({ items }) => {
     // Prevent ordering if "Select Order" is chosen
     if (!quantity) {
       setStatusMessage('Please select a valid quantity before ordering.');
-      // Clear the message after 500 milliseconds
       setTimeout(() => {
         setStatusMessage('');
       }, 1000);
@@ -67,66 +66,51 @@ const ItemsData = ({ items }) => {
       setStatusMessage(`You have ordered ${quantity} ${items.name}(s).`);
       setTimeout(() => {
         // navigate("/orders");
-      });
+      }, 1000);
     } catch (error) {
       console.error('There was a problem with the operation:', error);
     }
   };
 
   return (
-    <div
-      style={
-        {
-          // height: '100vh',
-          // display: 'flex',
-          // alignItems: 'center',
-          // justifyContent: 'center',
-          // padding: '20px',
-          // overflow: 'hidden',
-        }
-      }
-    >
-      <div className="glass-effect">
-        <div onClick={handleShow}>
-          <h1 className="text-center">{items.name}</h1>
-          <div className="d-flex justify-content-center">
-            <img
-              src={items.image}
-              className="img-fluid"
-              style={{ height: '150px', width: '150px', maxWidth: '100%' }}
-              alt={items.name}
-            />
-          </div>
+    <div className="item-data-container">
+      <div className="glass-effect" onClick={handleShow}>
+        <h1 className="text-center">{items.name}</h1>
+        <div className="d-flex justify-content-center">
+          <img
+            src={items.image}
+            className="img-fluid item-image"
+            alt={items.name}
+          />
         </div>
-        <div className="">
-          <div className="m-1 w-100">
-            <p>Quantity</p>
-            <select
-              className="form-control"
-              value={quantity}
-              onChange={(e) => setQuantity(Number(e.target.value))}
+        <div className="quantity-selection m-1">
+          <p>Quantity</p>
+          <select
+            className="form-control"
+            value={quantity}
+            onChange={(e) => setQuantity(Number(e.target.value))}
+          >
+            <option value="" disabled>
+              Select Order
+            </option>
+            {[...Array(items.qtyMax).keys()].map((i) => {
+              const qty = i + 1;
+              return (
+                <option key={qty} value={qty}>
+                  {qty}
+                </option>
+              );
+            })}
+          </select>
+          <div className="m-1 text-center">
+            <button
+              className="btn btn-success order-button"
+              onClick={handleOrder}
             >
-              {/* Display "Select Order Item" as the first option */}
-              <option value="" disabled>
-                Select Order
-              </option>
-              {/* Dynamically generate the quantity options */}
-              {[...Array(items.qtyMax).keys()].map((i) => {
-                const qty = i + 1;
-                return (
-                  <option key={qty} value={qty}>
-                    {qty}
-                  </option>
-                );
-              })}
-            </select>
-            <div className="m-1 w-100 text-center">
-              <button className="btn btn-success" onClick={handleOrder}>
-                Order Now
-              </button>
-            </div>
-            {statusMessage && <p className="status-message">{statusMessage}</p>}
+              Order Now
+            </button>
           </div>
+          {statusMessage && <p className="status-message">{statusMessage}</p>}
         </div>
       </div>
     </div>
