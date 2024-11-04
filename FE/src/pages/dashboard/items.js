@@ -10,6 +10,7 @@ const items = [
     quantity: 10,
     image: tea, // Use the imported image
   },
+
   {
     name: 'ප්ලේන් ටී',
     qtyMax: 10,
