@@ -22,7 +22,7 @@ export default function CustomNavbar() {
   return (
     <Navbar expand="lg" className="py-2 px-5 bg-white fixed-top shadow-sm">
       <Container>
-        <Navbar.Brand href="#">
+        <Navbar.Brand href="/dashboard">
           <img
             src={logo}
             alt="Tea App Logo"
