@@ -10,10 +10,10 @@ import TableCell, { tableCellClasses } from '@mui/material/TableCell';
 // import Modal from 'react-bootstrap/Modal';
 // import Button from 'react-bootstrap/Button';
 import './Orders.css';
-import image1 from './coffee-cup.png';
-import image2 from './coffee.png';
-import image3 from './coffee222.png';
-import image4 from './plain tea.png';
+import image1 from '../login/cup1.webp';
+import image2 from '../login/cup2.webp';
+import image3 from '../login/cup3.webp';
+import image4 from '../login/cup4.webp';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import {
   TableContainer,
