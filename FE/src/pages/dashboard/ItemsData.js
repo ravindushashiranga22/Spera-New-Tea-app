@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 import { useNavigate } from "react-router-dom";
-import "./ItemsData.css"; // Import your CSS file
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import "./ItemsData.css";
 
 const ItemsData = ({ items }) => {
   const [quantity, setQuantity] = useState(""); // Default empty to show "Select Order"
@@ -33,7 +35,6 @@ const ItemsData = ({ items }) => {
     // Prevent ordering if "Select Order" is chosen
     if (!quantity) {
       setStatusMessage("Please select a valid quantity before ordering.");
-      // Clear the message after 500 milliseconds
       setTimeout(() => {
         setStatusMessage("");
       }, 1000);
@@ -66,10 +67,11 @@ const ItemsData = ({ items }) => {
 
       setStatusMessage(`You have ordered ${quantity} ${items.name}(s).`);
       setTimeout(() => {
-       // navigate("/orders");
-      }, );
+        // navigate("/orders");
+      }, 1000);
     } catch (error) {
       console.error("There was a problem with the operation:", error);
+      toast.error("Network issue, please try again later.");
     }
   };
 
@@ -84,6 +86,7 @@ const ItemsData = ({ items }) => {
         overflow: "hidden",
       }}
     >
+      <ToastContainer /> {/* Place this component at the top level */}
       <div className="glass-effect">
         <div onClick={handleShow}>
           <h1 className="text-center">{items.name}</h1>
@@ -104,11 +107,9 @@ const ItemsData = ({ items }) => {
               value={quantity}
               onChange={(e) => setQuantity(Number(e.target.value))}
             >
-              {/* Display "Select Order Item" as the first option */}
               <option value="" disabled>
                 Select Order
               </option>
-              {/* Dynamically generate the quantity options */}
               {[...Array(items.qtyMax).keys()].map((i) => {
                 const qty = i + 1;
                 return (

@@ -14,44 +14,30 @@ import {
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
 import { useNavigate } from "react-router-dom";
-import backgroundImage from "./wall.jpg"; // Import your background image
-import newLogo from "./new logo.png"; // Import your new logo here
+import toast, { Toaster } from "react-hot-toast"; // Import toaster
+import backgroundImage from "./wall.jpg"; 
+import newLogo from "./new logo.png"; 
 
 const theme = createTheme({
   palette: {
-    primary: {
-      main: "#1976d2",
-    },
-    secondary: {
-      main: "#ff5722",
-    },
+    primary: { main: "#1976d2" },
+    secondary: { main: "#ff5722" },
   },
   typography: {
     fontFamily: "Roboto, sans-serif",
-    h5: {
-      fontWeight: 600,
-    },
+    h5: { fontWeight: 600 },
   },
 });
 
 const Login = () => {
   const navigate = useNavigate();
-  const [formData, setFormData] = useState({
-    email: "",
-    password: "",
-  });
+  const [formData, setFormData] = useState({ email: "", password: "" });
   const [showPassword, setShowPassword] = useState(false);
-  const [errors, setErrors] = useState({
-    email: "",
-    password: "",
-  });
+  const [errors, setErrors] = useState({ email: "", password: "" });
 
   const handleInputChange = (event) => {
     const { name, value } = event.target;
-    setFormData({
-      ...formData,
-      [name]: value,
-    });
+    setFormData({ ...formData, [name]: value });
   };
 
   const validateForm = () => {
@@ -75,32 +61,29 @@ const Login = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (!validateForm()) {
-      return;
-    }
+    if (!validateForm()) return;
 
     try {
       const response = await fetch("http://localhost:5000/auth/login", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify(formData),
       });
       const result = await response.json();
-      if (result.user && result.user._id) {
+
+      if (response.ok && result.user && result.user._id) {
         await window.localStorage.setItem("token", result.token);
         await window.localStorage.setItem("user", result.user._id);
         await window.localStorage.setItem("role", result.user.role);
-        if (result.user.role === "Shop") {
-          navigate("/orders");
-        } else {
-          navigate("/dashboard");
-        }
+        toast.success("Login successful!"); // Success toast
+        setTimeout(() => {
+          navigate(result.user.role === "Shop" ? "/orders" : "/dashboard");
+        }, 1000);
       } else {
-        console.error("Login failed");
+        toast.error(result.message || "Invalid password"); // Error toast
       }
     } catch (error) {
+      toast.error("Network issue, please try again later."); // Network error toast
       console.error(error.message);
     }
   };
@@ -115,6 +98,7 @@ const Login = () => {
 
   return (
     <ThemeProvider theme={theme}>
+      <Toaster position="top-right" /> {/* Toaster for notifications */}
       <Box
         sx={{
           height: "100vh",
@@ -132,25 +116,14 @@ const Login = () => {
             width: "30%",
             padding: 4,
           }}
-          className=" glass-effect"
+          className="glass-effect"
         >
           <CssBaseline />
-          <Box
-            sx={{
-              display: "flex",
-              flexDirection: "column",
-              alignItems: "center",
-            }}
-          >
+          <Box sx={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
             <Typography component="h1" variant="h5">
               Sign In
             </Typography>
-            <Box
-              component="form"
-              noValidate
-              sx={{ mt: 3 }}
-              onSubmit={handleSubmit}
-            >
+            <Box component="form" noValidate sx={{ mt: 3 }} onSubmit={handleSubmit}>
               <Grid container spacing={2}>
                 <Grid item xs={12}>
                   <TextField
@@ -180,10 +153,7 @@ const Login = () => {
                     InputProps={{
                       endAdornment: (
                         <InputAdornment position="end">
-                          <IconButton
-                            onClick={handleClickShowPassword}
-                            edge="end"
-                          >
+                          <IconButton onClick={handleClickShowPassword} edge="end">
                             {showPassword ? <Visibility /> : <VisibilityOff />}
                           </IconButton>
                         </InputAdornment>
@@ -192,13 +162,7 @@ const Login = () => {
                   />
                 </Grid>
               </Grid>
-              <Button
-                type="submit"
-                fullWidth
-                variant="contained"
-                sx={{ mt: 3, mb: 2 }}
-                className="bg-color-6"
-              >
+              <Button type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 2 }} className="bg-color-6">
                 Sign In
               </Button>
               <Grid container justifyContent="flex-end">

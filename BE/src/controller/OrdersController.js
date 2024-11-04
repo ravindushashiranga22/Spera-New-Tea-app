@@ -69,32 +69,26 @@ const OrderController = {
     }
   },
 
-  deleteOrder: async (req, res) => {
-    const { id } = req.params; // Get the order ID from the URL parameters
-
-    try {
-      const deletedOrder = await OrderService.deleteOrder(id);
-      if (!deletedOrder) {
-        return res.status(404).json({ message: 'Order not found' });
-      }
-      res.status(200).json({ message: 'Order deleted successfully' });
-    } catch (error) {
-      res.status(500).json({ message: 'Error deleting order', error });
-    }
-  },
   cancelOrder: async (req, res) => {
-    const { id } = req.params; // Get the order ID from the URL parameters
+    const { id } = req.params;
+    const { isCanceled, cancelReason, isCanceledByUser, predefinedReasons  } = req.body; 
 
     try {
-      const deletedOrder = await OrderService.cancelOrder(id);
-      if (!deletedOrder) {
+      const updatedOrder = await OrderService.findByIdAndUpdate(id,
+        { isCanceled: isCanceled, cancelReason: cancelReason, isCanceledByUser: isCanceledByUser, predefinedReasons: predefinedReasons},
+        { new: true }
+      );
+      if (!updatedOrder) {
         return res.status(404).json({ message: 'Order not found' });
       }
-      res.status(200).json({ message: 'Order deleted successfully' });
+      res.status(200).json(updatedOrder);
     } catch (error) {
-      res.status(500).json({ message: 'Error deleting order', error });
-    }
-  },
+      console.error("Error canceling order:", error);
+      res.status(500).json({ message: 'Error canceling order', error });
+  }
+},
 };
+  
 
 module.exports = OrderController;
+2002

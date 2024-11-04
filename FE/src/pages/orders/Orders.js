@@ -15,6 +15,9 @@ import image2 from "./coffee.png";
 import image3 from "./coffee222.png";
 import image4 from "./plain tea.png";
 import "bootstrap/dist/css/bootstrap.min.css";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -26,12 +29,13 @@ const StyledTableCell = styled(TableCell)(({ theme }) => ({
   },
 }));
 
-const StyledTableRow = styled(TableRow)(({ isCompleted }) => ({
-  backgroundColor: isCompleted ? "transparent" : "#d1c7bd",
+const StyledTableRow = styled(TableRow)(({ isCompleted, isCanceled }) => ({
+  backgroundColor: isCompleted ? "transparent" : isCanceled ? "transparent" : "#d1c7bd", // Different colors for completed and canceled
   "&:last-child td, &:last-child th": {
     border: 0,
   },
 }));
+
 
 const Orders = () => {
   const [orders, setOrders] = useState([]);
@@ -45,7 +49,9 @@ const Orders = () => {
   const userRole = window.localStorage.getItem("role");
   const userId = window.localStorage.getItem("userId");
   const [ws, setWs] = useState(null);
-  
+  const [isCanceledByUser, setIsCanceledByUser] = useState({});
+  const [acceptSuccessMessage, setAcceptSuccessMessage] = useState(""); 
+  const [errorMessage, setErrorMessage] = useState("");
 
   const fetchOrders = async () => {
     try {
@@ -70,11 +76,14 @@ const Orders = () => {
 
       const sortedOrders = filteredOrders.sort((a, b) => a.isCompleted - b.isCompleted);
       setOrders(sortedOrders);
+      setErrorMessage("");
     } catch (error) {
       console.error("Error fetching orders:", error);
+      setErrorMessage("Network issue, please try again.");
     }
   };
   useEffect(() => {
+    console.log("Order");
     const socket = new WebSocket("ws://localhost:5000");
     setWs(socket);
 
@@ -152,13 +161,22 @@ const Orders = () => {
     
       if (action === "cancel") {
         method = "PUT";
-        body = { reason: selectedOption }; // Add selectedOption as reason
+        body = {
+          isCanceled: true,
+          ispredefinedReasons: true,
+          isCanceledByUser: userRole !== "Shop", // Set isCanceled to true
+          cancelReason: selectedOption  || "Order Canceled by User",
+            // Add selectedOption as reason
+        };
+      setIsCanceledByUser((prev) => ({ ...prev, [orderId]: userRole !== "Shop" }));
       } else if (action === "done") {
         method = "PUT";
         body = { isCompleted: true };
       } else if (action === "accept") {
         method = "PUT";
         body = { isAccepted: true };
+        setAcceptSuccessMessage("Order accepted successfully!");
+        setTimeout(() => setAcceptSuccessMessage(""), 1060);
       }
     
       const response = await fetch(`http://localhost:5000/order/${orderId}`, {
@@ -170,11 +188,15 @@ const Orders = () => {
       if (!response.ok) throw new Error("Network response was not ok");
     
       if (action === "cancel") {
-        setCancelSuccessMessage(`Order canceled successfully! Reason: ${selectedOption}`);
+        setCancelSuccessMessage(`Order canceled successfully! Reason: ${selectedOption || "Order Canceled by User"}`);
+        setTimeout(() => setCancelSuccessMessage(""), 1060);
+        setSelectedOption(""); // Clear selected option
       }
       setRefresh(!refresh);
+      setErrorMessage("");
     } catch (error) {
       console.error("Error updating order:", error);
+      setErrorMessage("Network issue, please try again");
     }
   };
   
@@ -187,9 +209,15 @@ const Orders = () => {
     { id: 4, name: "ප්ලේන් ටී", imageUrl: image4 },
   ];
 
+  // const predefinedReasons = ["සීනි ඉවරයි", "පිටි ඉවරයි", "තේ කොල ඉවරයි", "කෝපි ඉවරයි", "වතුර නෑ", "විදුලිය නෑ"];
+
   return (
     <div ref={pageRef}>
       <h1 className="orders-title">Orders</h1>
+      
+      {acceptSuccessMessage && (
+        <div className="alert alert-success">{acceptSuccessMessage}</div>
+      )}
       {cancelSuccessMessage && (
         <div className="alert alert-success">{cancelSuccessMessage}</div>
       )}
@@ -222,7 +250,7 @@ const Orders = () => {
           <TableBody>
             {orders.length > 0 ? (
               orders.map((order) => (
-                <StyledTableRow key={order._id} isCompleted={order.isCompleted}>
+                <StyledTableRow key={order._id} isCompleted={order.isCompleted} isCanceled={order.isCanceled} >
                   <StyledTableCell component="th" scope="row">
                     {order.name || "Unknown Order"}
                   </StyledTableCell>
@@ -235,7 +263,7 @@ const Orders = () => {
                   </StyledTableCell>
                   <StyledTableCell align="right">
                     {/* Cancel button logic */}
-                    {!order.isCompleted && !order.isAccepted && (
+                    {!order.isCompleted && !order.isAccepted &&  !order?.isCanceled &&(
                       <button
                       className="cancel-btn bg-color-6"
                       onClick={() => {
@@ -248,10 +276,12 @@ const Orders = () => {
                     )}
 
                     {/* Accept button logic */}
-                    {userRole === "Shop" && !order.isAccepted && (
+                    {userRole === "Shop" && !order.isAccepted &&   !order?.isCanceled 
+ && (
                       <button
                         className="accept-btn bg-color-6"
                         onClick={() => handleOrderAction(order._id, "accept")}
+                        
                       >
                         Accept
                       </button>
@@ -266,13 +296,22 @@ const Orders = () => {
                         Done
                       </button>
                     )}
-                    {order.isCanceled && (
-                      <span style={{ color: "#5B3D21", fontWeight: "bold" }}>
-                        Order Canceled
-                        <br />
-                        Reason: {order.cancelReason}
-                      </span>
-                    )}
+                     {order.isCanceled && (
+  <span style={{ color: "#FF0000", fontWeight: "bold" }}>
+    {order.isCanceledByUser && !order.cancelReason
+      ? "Order Canceled by User"
+      : order.cancelReason
+      }
+  </span>
+)}
+
+
+{/* {isCanceledByUser[order._id] && (
+  <span style={{ color: "#FF0000", fontWeight: "bold" }}>
+    Order Canceled by User
+  </span>
+)} */}
+
                     {/* Display accepted status for normal users */}
                     {order.isAccepted && !order.isCompleted && userRole !== "Shop" && (
                       <span style={{ color: "#5B3D21", fontWeight: "bold" }}>
@@ -300,13 +339,19 @@ const Orders = () => {
         </Table>
       </TableContainer>
 
-      <Modal show={showModal} onHide={() => setShowModal(false)}>
+      <Modal show={showModal} onHide={() => { setShowModal(false); setSelectedOption(""); }}>
+
         <Modal.Header closeButton>
-          <Modal.Title>Select an Option</Modal.Title>
+          <Modal.Title>Are You Sure Cancel Order</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <div>
-            <h7>ඕඩර් එක අවලංගු කිරීමට ආසන්නතම හේතුව කුමක්ද?</h7>
+
+
+
+        { userRole == "Shop" ? <>
+
+          <h7>ඕඩර් එක අවලංගු කිරීමට ආසන්නතම හේතුව කුමක්ද?</h7>
             <div>
               <label>
                 <input
@@ -374,6 +419,17 @@ const Orders = () => {
                 විදුලිය නෑ
               </label>
             </div>
+
+        
+        
+        </>: <></>  }
+
+
+          
+
+
+
+
           </div>
         </Modal.Body>
         <Modal.Footer>
@@ -386,15 +442,15 @@ const Orders = () => {
           <Button
   variant="danger"
   onClick={() => {
-    if (selectedOption) {
-      handleOrderAction(orderIdToCancel, "cancel", selectedOption);
+    if (isCanceledByUser) {
+      handleOrderAction(orderIdToCancel, "cancel", isCanceledByUser);
       setShowModal(false);
     } else {
-      alert("Please select a cancellation reason.");
+      // alert("Please select a cancellation reason.");
     }
   }}
 >
-  Confirm Cancellation
+  Confirm
 </Button>
         </Modal.Footer>
       </Modal>

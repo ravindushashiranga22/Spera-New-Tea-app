@@ -26,12 +26,6 @@
   transition: background-color 0.3s ease;
 }
 
-.accept-btn:hover {
-  background-color: #FDD835; /* Darker Yellow on Hover */
-}
-
-
-
 .yellow-button {
   background-color: yellow;
   color: black; /* Optional: change text color for contrast */
@@ -50,23 +44,11 @@
   border-radius: 4px; /* Optional: add rounded corners */
 }
 
-
-.cancel-btn {
-  background-color: red; /* Red background */
-  color: white;
-  border: none;
-  cursor: pointer;
-}
-
 /* Align buttons within the table cell 
 
 /* Button hover effects */
 .done-button:hover {
   opacity: 0.8; /* Slight transparency on hover */
-}
-
-.cancel-btn:hover {
-  background-color: darkred;
 }
 
 .done-button:disabled {
@@ -98,14 +80,6 @@
   margin-top: 10px;
 }
 
-
-.bell-icon {
-  position: absolute;
-  top: 2.5px; /* Adjust as needed */
-  right: 5px; /* Adjust as needed */
-  width: 60px; /* Adjust size as needed */
-  height: 60px; /* Adjust size as needed */
-}
 
 
 

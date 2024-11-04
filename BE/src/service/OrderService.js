@@ -29,7 +29,7 @@ const OrderService = {
     // Fetch orders and populate the user role from userId field
     const orders = await Order.find()
       .populate('userId')  // Populate userId field with role information
-      .sort({ createdAt: -1 })
+      .sort({ updatedAt: -1 })
       .limit(100);
 
       

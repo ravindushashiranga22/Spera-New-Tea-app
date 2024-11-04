@@ -7,9 +7,12 @@ const router = express.Router();
 router.post('/', OrderController.createOrder);
 router.get('/', OrderController.getOrders);
 router.put('/:id', OrderController.updateOrder); // Fix: changed updateOrders to updateOrder
-router.delete('/:id', OrderController.deleteOrder); // Fix: changed deleteOrders to deleteOrder
+// router.delete('/:id', OrderController.deleteOrder); // Fix: changed deleteOrders to deleteOrder
 router.get('/:id', OrderController.getOrdersById);
-router.put('/:id', OrderController.cancelOrder);
+router.put('/cancel/:id', OrderController.cancelOrder);
+
+
+
 
 
 module.exports = router;

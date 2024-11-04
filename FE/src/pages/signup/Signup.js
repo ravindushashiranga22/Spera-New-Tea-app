@@ -111,6 +111,7 @@ const Signup = () => {
         }
       } catch (error) {
         console.error(error.message);
+        
       }
     }
   };
