@@ -80,6 +80,41 @@
   margin-top: 10px;
 }
 
+/* Orders.css */
+/* Orders.css */
+
+/* Container for aligning the button on the left side but centered vertically */
+.button-container {
+  display: flex;
+  justify-content: flex-start; /* Aligns the button to the left */
+  margin-top: 20px;
+}
+
+.back-btn {
+  background-color: #5B3D21;
+  color: white;
+  padding: 10px 20px;
+  font-size: 16px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.back-btn:hover {
+  background-color: #4a3118;
+}
+
+/* Orders.css */
+.modal-padding {
+  padding: 20px; /* Adjust padding value as needed */
+}
+
+.accept-btn img {
+  vertical-align: middle; /* Aligns the icon with the text */
+}
+
+
 
 
 

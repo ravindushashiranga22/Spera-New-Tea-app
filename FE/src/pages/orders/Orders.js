@@ -17,6 +17,10 @@ import image4 from "./plain tea.png";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { useNavigate } from "react-router-dom";
+import acceptIcon from "./tick-mark.png";
+import cancelIcon from "./cancel.png";
+import doneIcon from "./like.png";
 
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
@@ -52,6 +56,11 @@ const Orders = () => {
   const [isCanceledByUser, setIsCanceledByUser] = useState({});
   const [acceptSuccessMessage, setAcceptSuccessMessage] = useState(""); 
   const [errorMessage, setErrorMessage] = useState("");
+  const navigate = useNavigate();
+
+  const handleBack = () => {
+    navigate(-1); // Navigates to the previous page
+  };
 
   const fetchOrders = async () => {
     try {
@@ -165,7 +174,7 @@ const Orders = () => {
           isCanceled: true,
           ispredefinedReasons: true,
           isCanceledByUser: userRole !== "Shop", // Set isCanceled to true
-          cancelReason: selectedOption  || "Order Canceled by User",
+          cancelReason: selectedOption  || "Order Canceled by You",
             // Add selectedOption as reason
         };
       setIsCanceledByUser((prev) => ({ ...prev, [orderId]: userRole !== "Shop" }));
@@ -214,6 +223,13 @@ const Orders = () => {
   return (
     <div ref={pageRef}>
       <h1 className="orders-title">Orders</h1>
+
+      {userRole !== "Shop" && (
+        <button className="back-btn" onClick={handleBack}>
+          Back
+        </button>
+      )}
+      
       
       {acceptSuccessMessage && (
         <div className="alert alert-success">{acceptSuccessMessage}</div>
@@ -264,28 +280,37 @@ const Orders = () => {
                   <StyledTableCell align="right">
                     {/* Cancel button logic */}
                     {!order.isCompleted && !order.isAccepted &&  !order?.isCanceled &&(
-                      <button
-                      className="cancel-btn bg-color-6"
-                      onClick={() => {
-                        setOrderIdToCancel(order._id); // Set the order ID to be canceled
-                        setShowModal(true); // Show the cancel modal
-                      }}
-                    >
-                      Cancel
-                    </button>
-                    )}
+                     <button
+                     className="cancel-btn bg-color-6"
+                     onClick={() => {
+                       setOrderIdToCancel(order._id); // Set the order ID to be canceled
+                       setShowModal(true); // Show the cancel modal
+                     }}
+                   >
+                     <img 
+                       src={cancelIcon} // Replace with your icon path
+                       alt="Cancel" 
+                       style={{ 
+                         width: '20px', // Adjust size as needed
+                         marginRight: '8px',
+                          filter: 'invert(1)'
+                          // Space between icon and text
+                       }} 
+                     />
+                     {/* Cancel */}
+                   </button>
+                    )};
 
                     {/* Accept button logic */}
-                    {userRole === "Shop" && !order.isAccepted &&   !order?.isCanceled 
- && (
-                      <button
-                        className="accept-btn bg-color-6"
-                        onClick={() => handleOrderAction(order._id, "accept")}
-                        
-                      >
-                        Accept
-                      </button>
-                    )}
+                    {userRole === "Shop" && !order.isAccepted && !order?.isCanceled && (
+  <button
+    className="accept-btn bg-color-6"
+    onClick={() => handleOrderAction(order._id, "accept")}
+  >
+    <img src={acceptIcon} alt="Accept" style={{ width: '20px', marginRight: '8px',  filter: 'invert(1)'}} />
+    {/* Accept */}
+  </button>
+)}
 
                     {/* Done button logic */}
                     {userRole === "Shop" && order.isAccepted && !order.isCompleted && (
@@ -293,9 +318,12 @@ const Orders = () => {
                         className="done-button bg-color-6"
                         onClick={() => handleOrderAction(order._id, "done")}
                       >
-                        Done
-                      </button>
-                    )}
+                        {/* Done */}
+                        <img src={doneIcon} alt="Accept" style={{ width: '20px', marginRight: '8px',  filter: 'invert(1)'}} />
+    {/* Accept */}
+  </button>
+)}
+
                      {order.isCanceled && (
   <span style={{ color: "#FF0000", fontWeight: "bold" }}>
     {order.isCanceledByUser && !order.cancelReason
@@ -339,7 +367,7 @@ const Orders = () => {
         </Table>
       </TableContainer>
 
-      <Modal show={showModal} onHide={() => { setShowModal(false); setSelectedOption(""); }}>
+      <Modal show={showModal} onHide={() => { setShowModal(false); setSelectedOption(""); }}  className={userRole === "Shop" ? "modal-padding" : ""}>
 
         <Modal.Header closeButton>
           <Modal.Title>Are You Sure Cancel Order</Modal.Title>
