@@ -177,7 +177,7 @@ const Orders = () => {
           cancelReason: selectedOption  || "Order Canceled by You",
             // Add selectedOption as reason
         };
-      setIsCanceledByUser((prev) => ({ ...prev, [orderId]: userRole !== "Shop" }));
+      setIsCanceledByUser((prev) => ({ ...prev, [orderId]: userRole !== "Shop" }))
       } else if (action === "done") {
         method = "PUT";
         body = { isCompleted: true };
@@ -197,7 +197,7 @@ const Orders = () => {
       if (!response.ok) throw new Error("Network response was not ok");
     
       if (action === "cancel") {
-        setCancelSuccessMessage(`Order canceled successfully! Reason: ${selectedOption || "Order Canceled by User"}`);
+        setCancelSuccessMessage(`Order canceled successfully! Reason: ${selectedOption || "Order Canceled by You"}`)
         setTimeout(() => setCancelSuccessMessage(""), 1060);
         setSelectedOption(""); // Clear selected option
       }
@@ -299,7 +299,7 @@ const Orders = () => {
                      />
                      {/* Cancel */}
                    </button>
-                    )};
+                    )}
 
                     {/* Accept button logic */}
                     {userRole === "Shop" && !order.isAccepted && !order?.isCanceled && (

@@ -24,6 +24,8 @@ import { ThemeProvider, createTheme } from "@mui/material/styles";
 import { useNavigate } from "react-router-dom";
 import backgroundImage from "./wall.jpg"; // Adjust the path to your image
 import newLogo from "./new logo.png"; // Import your new logo here
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const theme = createTheme({
   palette: {
@@ -106,11 +108,14 @@ const Signup = () => {
         const result = await response.json();
         if (result.user && result.user._id) {
           navigate("/login");
+        } else if (result.message  == "Email already in use") {
+          toast.error("Email is already registered");
         } else {
           console.error("Signup failed");
         }
       } catch (error) {
         console.error(error.message);
+        toast.error("Network Issue Please try again.");
         
       }
     }
@@ -130,6 +135,7 @@ const Signup = () => {
           flexDirection: "column",
         }}
       >
+        <ToastContainer/> 
         <img src={newLogo} alt="New Logo" style={{ width: "30%" }} />
         <Container
           component="main"
