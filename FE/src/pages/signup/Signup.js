@@ -1,4 +1,302 @@
-import * as React from "react";
+// import * as React from 'react';
+// import {
+//   Avatar,
+//   Box,
+//   Button,
+//   Container,
+//   Grid,
+//   IconButton,
+//   InputAdornment,
+//   Link,
+//   TextField,
+//   Typography,
+//   MenuItem,
+//   Select,
+//   FormControl,
+//   InputLabel,
+//   FormHelperText,
+// } from '@mui/material';
+// import { useState } from 'react';
+// import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
+// import Visibility from '@mui/icons-material/Visibility';
+// import VisibilityOff from '@mui/icons-material/VisibilityOff';
+// import { ThemeProvider, createTheme } from '@mui/material/styles';
+// import { useNavigate } from 'react-router-dom';
+// import backgroundImage from './wall.jpg'; // Adjust the path to your image
+// import newLogo from './logo.webp'; // Import your new logo here
+// import { ToastContainer, toast } from 'react-toastify';
+// import 'react-toastify/dist/ReactToastify.css';
+
+// const theme = createTheme({
+//   palette: {
+//     primary: {
+//       main: '#1976d2', // Change primary color
+//     },
+//     secondary: {
+//       main: '#ff5722', // Accent color for buttons or icons
+//     },
+//   },
+//   typography: {
+//     fontFamily: 'Roboto, sans-serif',
+//     h5: {
+//       fontWeight: 600,
+//     },
+//   },
+// });
+
+// const Signup = () => {
+//   const navigate = useNavigate();
+//   const [formData, setFormData] = useState({
+//     firstName: '',
+//     lastName: '',
+//     email: '',
+//     password: '',
+//     role: '',
+//   });
+
+//   const [errors, setErrors] = useState({});
+//   const [showPassword, setShowPassword] = useState(false);
+
+//   const validateForm = () => {
+//     let newErrors = {};
+//     if (!formData.firstName.trim())
+//       newErrors.firstName = 'First name is required';
+//     if (!formData.lastName.trim()) newErrors.lastName = 'Last name is required';
+//     const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+//     if (!formData.email.trim()) {
+//       newErrors.email = 'Email is required';
+//     } else if (!emailPattern.test(formData.email)) {
+//       newErrors.email = 'Enter a valid email address';
+//     }
+//     if (!formData.password.trim()) newErrors.password = 'Password is required';
+//     else if (formData.password.length < 6)
+//       newErrors.password = 'Password should be at least 6 characters long';
+//     if (!formData.role) newErrors.role = 'Role is required';
+
+//     return newErrors;
+//   };
+
+//   const handleInputChange = (event) => {
+//     const { name, value } = event.target;
+//     setFormData({ ...formData, [name]: value });
+//   };
+
+//   const handleRoleChange = (event) => {
+//     setFormData({ ...formData, role: event.target.value });
+//   };
+
+//   const handleClickShowPassword = () => {
+//     setShowPassword(!showPassword);
+//   };
+
+//   const handleMouseDownPassword = (event) => {
+//     event.preventDefault();
+//   };
+
+//   const handleSubmit = async (e) => {
+//     e.preventDefault();
+//     const validationErrors = validateForm();
+//     setErrors(validationErrors);
+
+//     if (Object.keys(validationErrors).length === 0) {
+//       try {
+//         console.log(process.env.REACT_APP_SERVER_IP);
+
+//         const response = await fetch(
+//           `${process.env.REACT_APP_SERVER_IP}/user/register`,
+//           {
+//             method: 'POST',
+//             headers: { 'Content-Type': 'application/json' },
+//             body: JSON.stringify(formData),
+//           }
+//         );
+//         const result = await response.json();
+//         if (result.user && result.user._id) {
+//           navigate('/login');
+//         } else if (result.message == 'Email already in use') {
+//           toast.error('Email is already registered');
+//         } else {
+//           console.error('Signup failed');
+//         }
+//       } catch (error) {
+//         console.error(error.message);
+//         toast.error('Network Issue Please try again.');
+//       }
+//     }
+//   };
+
+//   const handleSignInClick = () => {
+//     navigate('/login');
+//   };
+
+//   return (
+//     <ThemeProvider theme={theme}>
+//       <Box
+//         sx={{
+//           height: '100vh',
+//           alignItems: 'center',
+//           display: 'flex',
+//           flexDirection: 'column',
+//         }}
+//       >
+//         <ToastContainer />
+//         <img src={newLogo} alt="New Logo" style={{ width: '30%' }} />
+//         <Container
+//           component="main"
+//           sx={{
+//             backdropFilter: 'blur(10px)',
+//             borderRadius: 7,
+//             width: '30%',
+//             padding: 4,
+//           }}
+//           className="glass-effect"
+//         >
+//           <Typography
+//             component="h1"
+//             variant="h5"
+//             sx={{ textAlign: 'center', color: '#333' }}
+//           >
+//             Sign up
+//           </Typography>
+//           <Box
+//             component="form"
+//             noValidate
+//             sx={{ mt: 3 }}
+//             onSubmit={handleSubmit}
+//           >
+//             <Grid container spacing={2}>
+//               <Grid item xs={12} sm={6}>
+//                 <TextField
+//                   autoComplete="given-name"
+//                   name="firstName"
+//                   required
+//                   fullWidth
+//                   id="firstName"
+//                   label="First Name"
+//                   autoFocus
+//                   value={formData.firstName}
+//                   onChange={handleInputChange}
+//                   error={!!errors.firstName}
+//                   helperText={errors.firstName}
+//                   variant="outlined"
+//                 />
+//               </Grid>
+//               <Grid item xs={12} sm={6}>
+//                 <TextField
+//                   required
+//                   fullWidth
+//                   id="lastName"
+//                   label="Last Name"
+//                   name="lastName"
+//                   autoComplete="family-name"
+//                   value={formData.lastName}
+//                   onChange={handleInputChange}
+//                   error={!!errors.lastName}
+//                   helperText={errors.lastName}
+//                   variant="outlined"
+//                 />
+//               </Grid>
+//               <Grid item xs={12}>
+//                 <TextField
+//                   required
+//                   fullWidth
+//                   id="email"
+//                   label="Email Address"
+//                   name="email"
+//                   autoComplete="email"
+//                   value={formData.email}
+//                   onChange={handleInputChange}
+//                   error={!!errors.email}
+//                   helperText={errors.email}
+//                   variant="outlined"
+//                 />
+//               </Grid>
+//               <Grid item xs={12}>
+//                 <TextField
+//                   required
+//                   fullWidth
+//                   name="password"
+//                   label="Password"
+//                   type={showPassword ? 'text' : 'password'}
+//                   id="password"
+//                   autoComplete="new-password"
+//                   value={formData.password}
+//                   onChange={handleInputChange}
+//                   InputProps={{
+//                     endAdornment: (
+//                       <InputAdornment position="end">
+//                         <IconButton
+//                           aria-label="toggle password visibility"
+//                           onClick={handleClickShowPassword}
+//                           onMouseDown={handleMouseDownPassword}
+//                         >
+//                           {showPassword ? <Visibility /> : <VisibilityOff />}
+//                         </IconButton>
+//                       </InputAdornment>
+//                     ),
+//                   }}
+//                   error={!!errors.password}
+//                   helperText={errors.password}
+//                   variant="outlined"
+//                 />
+//               </Grid>
+//               <Grid item xs={12}>
+//                 <FormControl fullWidth required error={!!errors.role}>
+//                   <InputLabel id="role-label">Role</InputLabel>
+//                   <Select
+//                     labelId="role-label"
+//                     id="role"
+//                     name="role"
+//                     value={formData.role}
+//                     onChange={handleRoleChange}
+//                     label="Role"
+//                   >
+//                     <MenuItem value="admin">Admin</MenuItem>
+//                     <MenuItem value="teamJs">TeamJS</MenuItem>
+//                     <MenuItem value="teamPhp">TeamPHP</MenuItem>
+//                     <MenuItem value="teamIot">TeamIOT</MenuItem>
+//                     <MenuItem value="teamHr">TeamHR</MenuItem>
+//                     <MenuItem value="Shop">Shop</MenuItem>
+//                     <MenuItem value="Guest">Guest</MenuItem>
+//                   </Select>
+//                   <FormHelperText>{errors.role}</FormHelperText>
+//                 </FormControl>
+//               </Grid>
+//             </Grid>
+//             <Button
+//               type="submit"
+//               fullWidth
+//               variant="contained"
+//               sx={{ mt: 3, mb: 2 }}
+//               className="bg-color-6"
+//             >
+//               Sign Up
+//             </Button>
+//             <Grid container justifyContent="flex-end">
+//               <Grid item>
+//                 <Link
+//                   variant="body2"
+//                   onClick={handleSignInClick}
+//                   style={{
+//                     color: 'black',
+//                     textDecoration: 'none',
+//                     cursor: 'pointer',
+//                   }}
+//                 >
+//                   Already have an account? Sign in
+//                 </Link>
+//               </Grid>
+//             </Grid>
+//           </Box>
+//         </Container>
+//       </Box>
+//     </ThemeProvider>
+//   );
+// };
+
+// export default Signup;
+
+import * as React from 'react';
 import {
   Avatar,
   Box,
@@ -15,29 +313,29 @@ import {
   FormControl,
   InputLabel,
   FormHelperText,
-} from "@mui/material";
-import { useState } from "react";
-import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
-import Visibility from "@mui/icons-material/Visibility";
-import VisibilityOff from "@mui/icons-material/VisibilityOff";
-import { ThemeProvider, createTheme } from "@mui/material/styles";
-import { useNavigate } from "react-router-dom";
-import backgroundImage from "./wall.jpg"; // Adjust the path to your image
-import newLogo from "./new logo.png"; // Import your new logo here
-import { ToastContainer, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
+} from '@mui/material';
+import { useState } from 'react';
+import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
+import Visibility from '@mui/icons-material/Visibility';
+import VisibilityOff from '@mui/icons-material/VisibilityOff';
+import { ThemeProvider, createTheme } from '@mui/material/styles';
+import { useNavigate } from 'react-router-dom';
+import backgroundImage from './wall.jpg';
+import newLogo from './logo.webp';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const theme = createTheme({
   palette: {
     primary: {
-      main: "#1976d2", // Change primary color
+      main: '#1976d2',
     },
     secondary: {
-      main: "#ff5722", // Accent color for buttons or icons
+      main: '#ff5722',
     },
   },
   typography: {
-    fontFamily: "Roboto, sans-serif",
+    fontFamily: 'Roboto, sans-serif',
     h5: {
       fontWeight: 600,
     },
@@ -47,11 +345,11 @@ const theme = createTheme({
 const Signup = () => {
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
-    firstName: "",
-    lastName: "",
-    email: "",
-    password: "",
-    role: "",
+    firstName: '',
+    lastName: '',
+    email: '',
+    password: '',
+    role: '',
   });
 
   const [errors, setErrors] = useState({});
@@ -60,18 +358,18 @@ const Signup = () => {
   const validateForm = () => {
     let newErrors = {};
     if (!formData.firstName.trim())
-      newErrors.firstName = "First name is required";
-    if (!formData.lastName.trim()) newErrors.lastName = "Last name is required";
+      newErrors.firstName = 'First name is required';
+    if (!formData.lastName.trim()) newErrors.lastName = 'Last name is required';
     const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!formData.email.trim()) {
-      newErrors.email = "Email is required";
+      newErrors.email = 'Email is required';
     } else if (!emailPattern.test(formData.email)) {
-      newErrors.email = "Enter a valid email address";
+      newErrors.email = 'Enter a valid email address';
     }
-    if (!formData.password.trim()) newErrors.password = "Password is required";
+    if (!formData.password.trim()) newErrors.password = 'Password is required';
     else if (formData.password.length < 6)
-      newErrors.password = "Password should be at least 6 characters long";
-    if (!formData.role) newErrors.role = "Role is required";
+      newErrors.password = 'Password should be at least 6 characters long';
+    if (!formData.role) newErrors.role = 'Role is required';
 
     return newErrors;
   };
@@ -100,189 +398,210 @@ const Signup = () => {
 
     if (Object.keys(validationErrors).length === 0) {
       try {
-        const response = await fetch("http://localhost:5000/user/register", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(formData),
-        });
+        const response = await fetch(
+          `${process.env.REACT_APP_SERVER_IP}/user/register`,
+          // `http://localhost:5000/user/register`,
+          {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(formData),
+          }
+        );
         const result = await response.json();
         if (result.user && result.user._id) {
-          navigate("/login");
-        } else if (result.message  == "Email already in use") {
-          toast.error("Email is already registered");
+          navigate('/login');
+        } else if (result.message === 'Email already in use') {
+          toast.error('Email is already registered');
         } else {
-          console.error("Signup failed");
+          console.error('Signup failed');
         }
       } catch (error) {
         console.error(error.message);
-        toast.error("Network Issue Please try again.");
-        
+        toast.error('Network Issue Please try again.');
       }
     }
   };
 
   const handleSignInClick = () => {
-    navigate("/login");
+    navigate('/login');
   };
 
   return (
     <ThemeProvider theme={theme}>
       <Box
         sx={{
-          height: "100vh",
-          alignItems: "center",
-          display: "flex",
-          flexDirection: "column",
+          height: '100vh',
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+          // backgroundImage: `url(${backgroundImage})`,
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+          padding: { xs: 2, sm: 4 },
         }}
       >
-        <ToastContainer/> 
-        <img src={newLogo} alt="New Logo" style={{ width: "30%" }} />
+        <ToastContainer />
         <Container
           component="main"
+          maxWidth="xs"
           sx={{
-            backdropFilter: "blur(10px)",
+            backdropFilter: 'blur(10px)',
             borderRadius: 7,
-            width: "30%",
-            padding: 4,
+            p: { xs: 2, sm: 4 },
+            width: { xs: '90%', sm: '60%', md: '50%', lg: '40%' },
           }}
           className="glass-effect"
         >
-          <Typography
-            component="h1"
-            variant="h5"
-            sx={{ textAlign: "center", color: "#333" }}
-          >
-            Sign up
-          </Typography>
           <Box
-            component="form"
-            noValidate
-            sx={{ mt: 3 }}
-            onSubmit={handleSubmit}
+            sx={{
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+            }}
           >
-            <Grid container spacing={2}>
-              <Grid item xs={12} sm={6}>
-                <TextField
-                  autoComplete="given-name"
-                  name="firstName"
-                  required
-                  fullWidth
-                  id="firstName"
-                  label="First Name"
-                  autoFocus
-                  value={formData.firstName}
-                  onChange={handleInputChange}
-                  error={!!errors.firstName}
-                  helperText={errors.firstName}
-                  variant="outlined"
-                />
-              </Grid>
-              <Grid item xs={12} sm={6}>
-                <TextField
-                  required
-                  fullWidth
-                  id="lastName"
-                  label="Last Name"
-                  name="lastName"
-                  autoComplete="family-name"
-                  value={formData.lastName}
-                  onChange={handleInputChange}
-                  error={!!errors.lastName}
-                  helperText={errors.lastName}
-                  variant="outlined"
-                />
-              </Grid>
-              <Grid item xs={12}>
-                <TextField
-                  required
-                  fullWidth
-                  id="email"
-                  label="Email Address"
-                  name="email"
-                  autoComplete="email"
-                  value={formData.email}
-                  onChange={handleInputChange}
-                  error={!!errors.email}
-                  helperText={errors.email}
-                  variant="outlined"
-                />
-              </Grid>
-              <Grid item xs={12}>
-                <TextField
-                  required
-                  fullWidth
-                  name="password"
-                  label="Password"
-                  type={showPassword ? "text" : "password"}
-                  id="password"
-                  autoComplete="new-password"
-                  value={formData.password}
-                  onChange={handleInputChange}
-                  InputProps={{
-                    endAdornment: (
-                      <InputAdornment position="end">
-                        <IconButton
-                          aria-label="toggle password visibility"
-                          onClick={handleClickShowPassword}
-                          onMouseDown={handleMouseDownPassword}
-                        >
-                          {showPassword ? <Visibility /> : <VisibilityOff />}
-                        </IconButton>
-                      </InputAdornment>
-                    ),
-                  }}
-                  error={!!errors.password}
-                  helperText={errors.password}
-                  variant="outlined"
-                />
-              </Grid>
-              <Grid item xs={12}>
-                <FormControl fullWidth required error={!!errors.role}>
-                  <InputLabel id="role-label">Role</InputLabel>
-                  <Select
-                    labelId="role-label"
-                    id="role"
-                    name="role"
-                    value={formData.role}
-                    onChange={handleRoleChange}
-                    label="Role"
-                  >
-                    <MenuItem value="admin">Admin</MenuItem>
-                    <MenuItem value="teamJs">TeamJS</MenuItem>
-                    <MenuItem value="teamPhp">TeamPHP</MenuItem>
-                    <MenuItem value="teamIot">TeamIOT</MenuItem>
-                    <MenuItem value="teamHr">TeamHR</MenuItem>
-                    <MenuItem value="Shop">Shop</MenuItem>
-                    <MenuItem value="Guest">Guest</MenuItem>
-                  </Select>
-                  <FormHelperText>{errors.role}</FormHelperText>
-                </FormControl>
-              </Grid>
-            </Grid>
-            <Button
-              type="submit"
-              fullWidth
-              variant="contained"
-              sx={{ mt: 3, mb: 2 }}
-              className="bg-color-6"
+            <img
+              src={newLogo}
+              alt="New Logo"
+              style={{ width: '60%', maxWidth: '200px', marginBottom: '20px' }}
+            />
+            <Typography
+              component="h1"
+              variant="h5"
+              sx={{ color: '#333', fontSize: { xs: '1.5rem', sm: '2rem' } }}
             >
-              Sign Up
-            </Button>
-            <Grid container justifyContent="flex-end">
-              <Grid item>
-                <Link
-                  variant="body2"
-                  onClick={handleSignInClick}
-                  style={{
-                    color: "black",
-                    textDecoration: "none",
-                    cursor: "pointer",
-                  }}
-                >
-                  Already have an account? Sign in
-                </Link>
+              Sign up
+            </Typography>
+            <Box
+              component="form"
+              noValidate
+              onSubmit={handleSubmit}
+              sx={{ mt: 3 }}
+            >
+              <Grid container spacing={2}>
+                <Grid item xs={12} sm={6}>
+                  <TextField
+                    autoComplete="given-name"
+                    name="firstName"
+                    required
+                    fullWidth
+                    id="firstName"
+                    label="First Name"
+                    autoFocus
+                    value={formData.firstName}
+                    onChange={handleInputChange}
+                    error={!!errors.firstName}
+                    helperText={errors.firstName}
+                    variant="outlined"
+                  />
+                </Grid>
+                <Grid item xs={12} sm={6}>
+                  <TextField
+                    required
+                    fullWidth
+                    id="lastName"
+                    label="Last Name"
+                    name="lastName"
+                    autoComplete="family-name"
+                    value={formData.lastName}
+                    onChange={handleInputChange}
+                    error={!!errors.lastName}
+                    helperText={errors.lastName}
+                    variant="outlined"
+                  />
+                </Grid>
+                <Grid item xs={12}>
+                  <TextField
+                    required
+                    fullWidth
+                    id="email"
+                    label="Email Address"
+                    name="email"
+                    autoComplete="email"
+                    value={formData.email}
+                    onChange={handleInputChange}
+                    error={!!errors.email}
+                    helperText={errors.email}
+                    variant="outlined"
+                  />
+                </Grid>
+                <Grid item xs={12}>
+                  <TextField
+                    required
+                    fullWidth
+                    name="password"
+                    label="Password"
+                    type={showPassword ? 'text' : 'password'}
+                    id="password"
+                    autoComplete="new-password"
+                    value={formData.password}
+                    onChange={handleInputChange}
+                    InputProps={{
+                      endAdornment: (
+                        <InputAdornment position="end">
+                          <IconButton
+                            aria-label="toggle password visibility"
+                            onClick={handleClickShowPassword}
+                            onMouseDown={handleMouseDownPassword}
+                          >
+                            {showPassword ? <Visibility /> : <VisibilityOff />}
+                          </IconButton>
+                        </InputAdornment>
+                      ),
+                    }}
+                    error={!!errors.password}
+                    helperText={errors.password}
+                    variant="outlined"
+                  />
+                </Grid>
+                <Grid item xs={12}>
+                  <FormControl fullWidth required error={!!errors.role}>
+                    <InputLabel id="role-label">Role</InputLabel>
+                    <Select
+                      labelId="role-label"
+                      id="role"
+                      name="role"
+                      value={formData.role}
+                      onChange={handleRoleChange}
+                      label="Role"
+                    >
+                      <MenuItem value="admin">Admin</MenuItem>
+                      <MenuItem value="teamJs">TeamJS</MenuItem>
+                      <MenuItem value="teamPhp">TeamPHP</MenuItem>
+                      <MenuItem value="teamIot">TeamIOT</MenuItem>
+                      <MenuItem value="teamHr">TeamHR</MenuItem>
+                      <MenuItem value="Shop">Shop</MenuItem>
+                      <MenuItem value="Guest">Guest</MenuItem>
+                    </Select>
+                    <FormHelperText>{errors.role}</FormHelperText>
+                  </FormControl>
+                </Grid>
               </Grid>
-            </Grid>
+              <Button
+                type="submit"
+                fullWidth
+                variant="contained"
+                sx={{ mt: 3, mb: 2, py: { xs: 1.2, sm: 1.5 } }}
+                className="bg-color-6"
+              >
+                Sign Up
+              </Button>
+              <Grid container justifyContent="center">
+                <Grid item>
+                  <Link
+                    variant="body2"
+                    onClick={handleSignInClick}
+                    sx={{
+                      color: 'black',
+                      textDecoration: 'none',
+                      cursor: 'pointer',
+                      fontSize: { xs: '0.8rem', sm: '0.9rem' },
+                    }}
+                  >
+                    Already have an account? Sign in
+                  </Link>
+                </Grid>
+              </Grid>
+            </Box>
           </Box>
         </Container>
       </Box>

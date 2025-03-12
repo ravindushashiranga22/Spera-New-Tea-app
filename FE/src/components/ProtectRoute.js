@@ -19,7 +19,8 @@ const ProtectRoute = ({ children, allowShop }) => {
   // Otherwise, render the child components (Dashboard or Orders)
   return (
     <>
-      <Navbar /> {/* Render Navbar before children */}
+      {/* <Navbar />  */}
+      {/* Render Navbar before children */}
       {children}
     </>
   );

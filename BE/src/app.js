@@ -105,9 +105,19 @@ const orderRoutes = require("./routes/OrdersRoutes");
 const WebSocket = require('ws');
 const http = require('http'); // Import the http module
 const { setupWebSocket } = require("./services/websocketServer");
-
 const app = express();
-const PORT = process.env.PORT || 5000;
+
+const {createDatabaseConnection} = require("../src/configuration/dbConfig.js");
+
+
+require('dotenv').config();
+
+
+const PORT = process.env.PORT;
+// console.log(process.env);
+// console.log(process.env.PORT);
+
+createDatabaseConnection()
 
 // Middleware setup
 app.use(bodyParser.json());

@@ -1,7 +1,7 @@
-import tea from './coffee-cup.png';
-import plainTea from './tea1.png';
-import milkCoffee from './coffee-cup_1047462.png';
-import blackCoffee from './coffee.png';
+import tea from './milk tea new.png';
+import plainTea from './1p.png';
+import milkCoffee from './2t.png';
+import blackCoffee from './1c.png';
 
 const items = [
   {
